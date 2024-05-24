@@ -5,6 +5,8 @@ VisualStudioVersion = 17.9.34902.65
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "silicon-profileProvider", "silicon-profileProvider\silicon-profileProvider.csproj", "{B6D7E71B-CC26-4B66-95D7-84419D59F8A9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", "{6DEF51DC-B460-497C-B9ED-EBA536E9E234}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{B6D7E71B-CC26-4B66-95D7-84419D59F8A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6D7E71B-CC26-4B66-95D7-84419D59F8A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6D7E71B-CC26-4B66-95D7-84419D59F8A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DEF51DC-B460-497C-B9ED-EBA536E9E234}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DEF51DC-B460-497C-B9ED-EBA536E9E234}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DEF51DC-B460-497C-B9ED-EBA536E9E234}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DEF51DC-B460-497C-B9ED-EBA536E9E234}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
