@@ -1,24 +1,82 @@
+using Data.Entities;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using silicon_profileProvider.Models;
 
-namespace silicon_profileProvider.Functions
+namespace silicon_profileProvider.Functions;
+
+public class GetProfile
 {
-    public class GetProfile
+    private readonly ILogger<GetProfile> _logger;
+    private readonly UserManager<UserEntity> _userManager;
+
+    public GetProfile(ILogger<GetProfile> logger, UserManager<UserEntity> userManager)
     {
-        private readonly ILogger<GetProfile> _logger;
+        _logger = logger;
+        _userManager = userManager;
+    }
 
-        public GetProfile(ILogger<GetProfile> logger)
+    [Function("GetProfile")]
+    public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequest req)
+    {
+        _logger.LogWarning("Started");
+        string body = null!;
+
+        try
         {
-            _logger = logger;
+            body = await new StreamReader(req.Body).ReadToEndAsync();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"StreamReader :: {ex.Message}");
         }
 
-        [Function("GetProfile")]
-        public IActionResult Run([HttpTrigger(AuthorizationLevel.Function, "get")] HttpRequest req)
+        if (body != null)
         {
-            _logger.LogInformation("C# HTTP trigger function processed a request.");
-            return new OkObjectResult("Welcome to Azure Functions!");
+            GetProfileRequest gpr = null!;
+
+            try
+            {
+                gpr = JsonConvert.DeserializeObject<GetProfileRequest>(body)!;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"JsonConvert.DeserializeObject<UserProfileRequest>(body) :: {ex.Message}");
+            }
+
+            if (gpr != null)
+            {
+                try
+                {
+                    var userEntity = await _userManager.FindByIdAsync(gpr.UserId);
+
+                    if (userEntity != null)
+                    {
+                        UserProfileResult upResult = new UserProfileResult
+                        {
+                            ProfileImg = userEntity.ProfileImg,
+                            FirstName = userEntity.FirstName,
+                            LastName = userEntity.LastName,
+                            Email = userEntity.Email!,
+                            Phone = userEntity.Phone,
+                            Bio = userEntity.Bio,
+                        };
+
+                        return new OkObjectResult(upResult);
+                    }
+
+                    return new NotFoundObjectResult("User for Token not found");
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError($"_userManager.FindByIdAsync :: {ex.Message}");
+                }
+            }
         }
+        return new BadRequestResult();
     }
 }
