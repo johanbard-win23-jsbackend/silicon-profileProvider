@@ -1,11 +1,16 @@
-﻿namespace silicon_profileProvider.Models;
+﻿using System.Drawing;
+
+namespace silicon_profileProvider.Models;
 
 public class UpdateProfileDetailsRequest
 {
-    public string UserId { get; set; } = "";
-    public string FirstName { get; set; } = "";
+    public string UserId { get; set; } = "DEFAULT FROM UPDR";
 
-    public string LastName { get; set; } = "";
+    public string FirstName { get; set; } = null!;
+
+    public string LastName { get; set; } = null!;
+
+    public string Email { get; set; } = null!;
 
     public string? Phone { get; set; }
 

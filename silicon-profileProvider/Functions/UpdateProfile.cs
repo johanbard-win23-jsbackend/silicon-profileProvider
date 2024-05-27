@@ -52,7 +52,7 @@ public class UpdateProfile
             {
                 try
                 {
-                    var userEntity = await _userManager.FindByIdAsync(updr.UserId);
+                    var userEntity = await _userManager.FindByNameAsync(updr.Email);
 
                     if (userEntity != null)
                     {
@@ -65,7 +65,7 @@ public class UpdateProfile
                         var res = await _userManager.UpdateAsync(userEntity);
 
                         if (res != null && res.Succeeded)
-                            return new OkObjectResult(new { StatusCode = 200 });
+                            return new OkResult();
 
                         _logger.LogError($"UserEntity update failed");
                     }
@@ -78,6 +78,6 @@ public class UpdateProfile
                 }
             }
         }
-        return new BadRequestResult();
+        return new ObjectResult(new { Error = $"Function UpdateProfile failed" }) { StatusCode = 500 };
     }
 }
