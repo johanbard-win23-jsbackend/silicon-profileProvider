@@ -9,18 +9,18 @@ using silicon_profileProvider.Models;
 
 namespace silicon_profileProvider.Functions;
 
-public class UpdateProfile
+public class UpdateDetails
 {
-    private readonly ILogger<UpdateProfile> _logger;
+    private readonly ILogger<UpdateDetails> _logger;
     private readonly UserManager<UserEntity> _userManager;
 
-    public UpdateProfile(ILogger<UpdateProfile> logger, UserManager<UserEntity> userManager)
+    public UpdateDetails(ILogger<UpdateDetails> logger, UserManager<UserEntity> userManager)
     {
         _logger = logger;
         _userManager = userManager;
     }
 
-    [Function("UpdateProfile")]
+    [Function("UpdateDetails")]
     public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequest req)
     {
         _logger.LogWarning("Started");

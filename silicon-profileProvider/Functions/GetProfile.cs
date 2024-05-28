@@ -1,8 +1,10 @@
+using Data.Contexts;
 using Data.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using silicon_profileProvider.Models;
@@ -12,11 +14,13 @@ namespace silicon_profileProvider.Functions;
 public class GetProfile
 {
     private readonly ILogger<GetProfile> _logger;
+    private readonly DataContext _context;
     private readonly UserManager<UserEntity> _userManager;
 
-    public GetProfile(ILogger<GetProfile> logger, UserManager<UserEntity> userManager)
+    public GetProfile(ILogger<GetProfile> logger, DataContext context, UserManager<UserEntity> userManager)
     {
         _logger = logger;
+        _context = context;
         _userManager = userManager;
     }
 
@@ -66,6 +70,8 @@ public class GetProfile
                             Phone = userEntity.Phone,
                             Bio = userEntity.Bio
                         };
+
+                        userEntity.Address = await _context.Addresses.FirstOrDefaultAsync(x => x.Id == userEntity.AddressId);
 
                         if (userEntity.Address != null)
                         {
