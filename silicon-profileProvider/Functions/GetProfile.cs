@@ -54,19 +54,30 @@ public class GetProfile
                 {
                     var userEntity = await _userManager.FindByIdAsync(gpr.UserId);
 
-                    if (userEntity != null)
+                    if (userEntity != null && userEntity.Email != null)
                     {
-                        UserProfileResult upResult = new UserProfileResult
+                        GetProfileResult gpResult = new GetProfileResult
                         {
+                            UserId = userEntity.Id,
                             ProfileImg = userEntity.ProfileImg,
                             FirstName = userEntity.FirstName,
                             LastName = userEntity.LastName,
-                            Email = userEntity.Email!,
+                            Email = userEntity.Email,
                             Phone = userEntity.Phone,
-                            Bio = userEntity.Bio,
+                            Bio = userEntity.Bio
                         };
 
-                        return new OkObjectResult(upResult);
+                        if (userEntity.Address != null)
+                        {
+                            gpResult.Address1 = userEntity.Address.Address1;
+                            gpResult.Address2 = userEntity.Address.Address2;
+                            gpResult.PostalCode = userEntity.Address.PostalCode;
+                            gpResult.City = userEntity.Address.City;
+                        }
+
+                        //var json = JsonConvert.SerializeObject(gpResult);
+
+                        return new OkObjectResult(gpResult);
                     }
 
                     return new NotFoundObjectResult("User for Token not found");
