@@ -27,7 +27,7 @@ public class UserEntity : IdentityUser
     [Column(TypeName = "datetime")]
     public DateTime RegistrationDate { get; set; }
 
-    public string? SubscriberId { get; set; }
+    public int? SubscriberId { get; set; }
 
     [ForeignKey(nameof(Address))]
     public int? AddressId { get; set; }
